@@ -274,6 +274,12 @@ App.post('/api/login', function(req,res){
     associates.findOne({Email:associateData.Email},(err,user)=>{
         if (err) 
         console.log(err);
+        else if(user==null)
+        {
+            res.status(401).json({
+                message:"Invalid credentials"
+            });
+        }
         else{
             let validation =  bcrypt.compareSync(associateData.Password,user.Password);
             console.log(validation);
