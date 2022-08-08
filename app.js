@@ -424,8 +424,8 @@ App.post('/api/adm-login', function(req,res){
             res.header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
             let id = req.body.item._id;
             var booking ={
-                associateName: req.username,
-                associateEmail:req.email,
+                associateName: req.body.item.username,
+                associateEmail:req.body.item.email,
                 hallName:req.body.item.hallName,
                 Date:req.body.item.Date,
                 fromTime:req.body.item.fromTime,
