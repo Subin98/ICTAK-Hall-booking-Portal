@@ -490,19 +490,25 @@ App.post('/api/adm-login', function(req,res){
     })
     })
        
-       App.delete("/api/del-associate/:id",verifyAdminToken, function(req,res){
-           res.header("Access-Control-Allow-Origin", "*");
-           res.header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-           
-           
-           console.log(req.params.id);
-           associates.findByIdAndDelete(req.params.id)
-           .then(()=>{
-               console.log("Success");
-               
-               res.send();
-           })
-       })
+    App.delete("/api/del-associate/:id",verifyAdminToken, function(req,res){
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+        
+        associates.findById({"_id":req.params.id},(err, data)=>{
+         let email = data.Email;
+         bookings.deleteMany({"associateEmail":email})
+         .then(()=>{
+             console.log("Success");
+         })
+        });
+         
+         associates.findByIdAndDelete(req.params.id)
+        .then(()=>{
+            console.log("Success");
+            
+            res.send();
+        })
+    })
 
        App.get('/*', function(req, res) {
         res.sendFile(path.join(__dirname + '/dist/frontend/index.html'));
